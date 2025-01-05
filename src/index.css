@@ -18,3 +18,38 @@
   border-radius: 10px;
   border: 1px solid rgba(225,225,225,0.18);
 }
+
+
+.mode {
+  color: white;
+  margin-right: 5px;
+  margin-top: 5px;
+
+  
+} 
+
+.light {
+  color:white;
+  border-radius: 45px;
+  
+  cursor: pointer;
+  background: #0094F1;
+  padding: 3px;
+}
+
+.dark {
+  color: white;
+  border-radius: 45px;
+ 
+  cursor: pointer;
+  background: #0094F1;
+  padding: 3px;
+}
+
+
+.button-t:hover {
+  font-weight: bold;
+  scale: 1.5;
+}
+
+
