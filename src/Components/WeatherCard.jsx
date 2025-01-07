@@ -10,37 +10,43 @@ import '../index.css'
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import { fetchData } from '../redux/weatherSlice'
+import moment from 'moment'
 
 
 
 
 function WeatherCard(){
+  const dateAndTime = moment().format('LLLL');
   const data = useSelector((state) => state.weather.temperature)
- 
+  console.log(data);
   
     const dispatch = useDispatch();
-  dispatch(fetchData())
 useEffect(() => {
-
-},[])
+  dispatch(fetchData())
   
+  
+},[])
+
   return (
     <div className='w-[23rem] min-w-[23rem] h-[32rem] glassCard p-4'>
       
       <div className='flex w-full just-center, items-center gap-4 mt-12 mb-4'>
         <img src={sun} alt="weather_icon" />
+        <div style={{display:"flex", justifyContent:"center", alignItems:"center"}}>
         <p className='font-bold text-7xl flex justify-center items-center  ' >{data.clouds}&deg;C </p>
+        <img src={data.IconWeather} alt="icon" />
+        </div>
       </div>
-      <div className='font-bold text-center text-xl'>
+      <div className='font-bold text-center text-3xl'>
        {data.city}
       </div>
       <div className='w-full flex justify-between items-center mt-4'>
-        <p className='flex-1 text-center p-2'>05/01/2025</p>
+        <p className='flex-1 text-center p-2'>{dateAndTime}</p>
         
       </div>
       <div className='w-full flex justify-between items-center mt-4 gap-4'>
-        <p className='flex-1 text-center p-2 font-bold bg-blue-600 shadow rounded-lg'>Wind Speed {data.speed}<p className='font-normal'>5,3 km/h</p></p>
-        <p className='flex-1 text-center p-2 font-bold rounded-lg bg-green-600'>Humidity {data.humidity} <p className='font-normal'>34 gm/m&#179;</p></p>
+        <p className='flex-1 text-center p-2 font-bold bg-blue-600 shadow rounded-lg'>Wind Speed <div className='font-normal'>{data.wind} km/h</div></p>
+        <p className='flex-1 text-center p-2 font-bold rounded-lg bg-green-600'>Humidity  <div className='font-normal'>{data.humidity} gm/m&#179;</div></p>
       </div>
       <div className='w-full p-3 mt-4 flex justify-between items-center'>
         <p className='font-semibold text-lg'>Heat Index</p>
