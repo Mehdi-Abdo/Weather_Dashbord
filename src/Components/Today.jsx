@@ -23,7 +23,7 @@ export default function Today() {
   
 
   return (
-    <div className="hourly-forecast">
+    <div  className="flex flex-row justify-Start gap-8">
       {hoursData.map((data, index) => (
         <div key={index} className="forecast-item">
            <Card  className=" mb-3 shadow-lg rounded-lg">
@@ -32,9 +32,7 @@ export default function Today() {
          <Grid className="mb-3">
          <Typography variant="h6" component="div" className="text-white " style={{display:"flex" , fontWeight:"bold",alignItems:"center", justifyContent:"center"}}>
            {data.hour}:00
-           
-             </Typography>
-            
+             </Typography>  
            </Grid>
          </div> 
          <Grid item xs={8}>
@@ -43,8 +41,7 @@ export default function Today() {
             src={`https://openweathermap.org/img/wn/${data.weatherIconCode}@2x.png`}
             alt={data.weatherDescription}
             className="weather-icon"
-          />
-           
+          />  
            <Typography variant="h6" component="div" className="text-black " style={{display:"flex" , fontWeight:"bold",alignItems:"center", justifyContent:"center"}}>
            {data.temperature}°C
             </Typography>
@@ -60,59 +57,3 @@ export default function Today() {
 
 
 
-// const Today =  [
-//     { hour: "9 pm" ,temperature: "38", weatherIconCode: fog },
-//     { hour: "9 pm", temperature: "38", weatherIconCode: fog },
-//     { hour: "9 pm", temperature: "38", weatherIconCode: fog},
-//     { hour: "9 pm", temperature: "38", weatherIconCode:fog },
-//     { hour: "9 pm", temperature: "38", weatherIconCode: fog },
-//     { hour: "9 pm", temperature: "38", weatherIconCode: fog },
-//     { hour: "9 pm", temperature: "38", weatherIconCode:fog },
-//     { hour: "9 pm", temperature: "38", weatherIconCode: fog },
- 
-//   ];
-  
-  
-//   const TodayX = Today.map((card, index) => {
-//     return (
-//    <div   key={index} > 
-//    <Card  className=" mb-3 shadow-lg rounded-lg">
-//       <Grid container alignItems="center" justifyContent="center" >
-//        <div className="w-full bg-blue-600">
-//         <Grid className="mb-3">
-//         <Typography variant="h6" component="div" className="text-white " style={{display:"flex" , fontWeight:"bold",alignItems:"center", justifyContent:"center"}}>
-//           {data.hour}:00
-           
-//             </Typography>
-            
-            
-//         </Grid>
-//         </div> 
-//         <Grid item xs={8}>
-//           <CardContent>
-          //  <img
-          //   src={`https://openweathermap.org/img/wn/${data.weatherIconCode}@2x.png`}
-          //   alt={data.weatherDescription}
-          //   className="weather-icon"
-          // />
-           
-//            <Typography variant="h6" component="div" className="text-black " style={{display:"flex" , fontWeight:"bold",alignItems:"center", justifyContent:"center"}}>
-//            {data.temperature}°C
-//             </Typography>
-//           </CardContent>
-//         </Grid>
-//       </Grid>
-//     </Card>
-//     </div>
-    
-
-
-// );
-// });
-
-// return (
-//     <div  className="flex flex-row justify-Start gap-8">
-//       {TodayX}
-//     </div>
-//   );
-// }

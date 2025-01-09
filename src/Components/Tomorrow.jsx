@@ -1,66 +1,68 @@
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import Grid from "@mui/material/Grid";
-import snow from "../assets/icons/snow.png"
-
-
-
-
+import { useSelector, useDispatch } from "react-redux";
+import { GetTomorrowHours } from "../redux/weatherSlice"; // Action to fetch tomorrow's forecast
+import { useEffect } from "react";
 
 export default function Tomorrow() {
-const Today =  [
-    { time: "9 pm", temperature: "8", icon: snow },
-    { time: "9 pm", temperature: "8", icon: snow },
-    { time: "9 pm", temperature: "8", icon: snow},
-    { time: "9 pm", temperature: "8", icon:snow },
-    { time: "9 pm", temperature: "8", icon: snow },
-    { time: "9 pm", temperature: "8", icon: snow },
-    { time: "9 pm", temperature: "8", icon:snow },
-    { time: "9 pm", temperature: "8", icon: snow },
- 
-  ];
+  const dispatch = useDispatch();
+  const { tomorrowHoursData } = useSelector((state) => state.weather);
 
-  const TomorrowX = Today.map((card, index) => {
-    return (
-   <div   key={index} > 
-   <Card  className=" mb-3 shadow-lg rounded-lg">
-      <Grid container alignItems="center" justifyContent="center" >
-       <div className="w-full bg-blue-600">
-        <Grid className="mb-3">
-        <Typography variant="h6" component="div" className="text-white " style={{display:"flex" , fontWeight:"bold",alignItems:"center", justifyContent:"center"}}>
-           {card.time}
-            </Typography>
-        </Grid>
-        </div> 
-        <Grid item xs={8}>
-          <CardContent>
-          <CardMedia
-            component="img"
-            height="100"
-            image={card.icon}
-            alt="Weather Icon"
-            className="p-2 mb-3"
-          />
-           
-           <Typography variant="h6" component="div" className="text-black " style={{display:"flex" , fontWeight:"bold",alignItems:"center", justifyContent:"center"}}>
-            {card.temperature}
-            </Typography>
-          </CardContent>
-        </Grid>
-      </Grid>
-    </Card>
+  useEffect(() => {
+    dispatch(GetTomorrowHours());
+  }, [dispatch]);
+
+  return (
+    <div className="flex flex-row justify-start gap-8">
+      {tomorrowHoursData.map((data, index) => (
+        <div key={index} className="forecast-item">
+          <Card className="mb-3 shadow-lg rounded-lg">
+            <Grid container alignItems="center" justifyContent="center">
+              <div className="w-full bg-blue-600">
+                <Grid className="mb-3">
+                  <Typography
+                    variant="h6"
+                    component="div"
+                    className="text-white"
+                    style={{
+                      display: "flex",
+                      fontWeight: "bold",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {data.hour}:00
+                  </Typography>
+                </Grid>
+              </div>
+              <Grid item xs={8}>
+                <CardContent>
+                  <img
+                    src={`https://openweathermap.org/img/wn/${data.weatherIconCode}@2x.png`}
+                    alt={data.weatherDescription}
+                    className="weather-icon"
+                  />
+                  <Typography
+                    variant="h6"
+                    component="div"
+                    className="text-black"
+                    style={{
+                      display: "flex",
+                      fontWeight: "bold",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    {data.temperature}°C
+                  </Typography>
+                </CardContent>
+              </Grid>
+            </Grid>
+          </Card>
+        </div>
+      ))}
     </div>
-    
-
-
-);
-});
-
-return (
-    <div  className="flex flex-row justify-Start gap-8">
-      {TomorrowX}
-    </div>
-  );
+  );
 }
