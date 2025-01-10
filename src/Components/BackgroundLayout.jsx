@@ -10,7 +10,7 @@ import Rainy from '../assets/images/Rainy.jpg'
 
 function BackgroundLayout() {
   return (
-    <img src={Rainy} alt="weather_image" className='h-screen w-full fixed left-0 top-0 -z-[10]' />
+    <img src={Rainy} alt="weather_image" className='h-full  w-full fixed left-0 top-0 -z-[10]' />
   )
 }
 

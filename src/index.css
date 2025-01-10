@@ -52,4 +52,24 @@
   scale: 1.5;
 }
 
+.line:hover {
+  border:1px solid rgba(225,225,225,0.18);
+scale:1.5;
+}
 
+/* responsive ui design  */
+@media (max-width: 767px) {
+.daysCard {
+ flex-wrap: nowrap;
+ overflow-x: scroll;
+}
+}
+
+@media (min-width:768px) {
+  .daysCard {
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+   }
+
+}

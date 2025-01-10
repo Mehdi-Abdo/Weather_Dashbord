@@ -12,7 +12,7 @@ export const fetchData = createAsyncThunk(
     try {
       const response = await axios.get(url);
       const data = response.data;
-      console.log("xxxx",data.humidity);
+  
       return {
         wind: data.wind.speed,
         feelsLike: Math.round(data.main.feels_like - 273.15),
@@ -51,7 +51,7 @@ export const GetHours = createAsyncThunk(
 
       return filteredData.map((entry) => ({
         hour: new Date(entry.dt * 1000).getHours(),
-        temperature: entry.main.temp,
+        temperature: Math.round(entry.main.temp),
         weatherDescription: entry.weather[0].description,
         weatherIconCode: entry.weather[0].icon,
       }));
@@ -66,7 +66,7 @@ export const GetHours = createAsyncThunk(
 export const GetLatLon = createAsyncThunk(
   "weather/GetLatLon",
   async (_, { rejectWithValue }) => {
-    const url = `http://api.openweathermap.org/geo/1.0/direct?q=Rabat&appid=${API_KEY}`;
+    const url = `http://api.openweathermap.org/geo/1.0/direct?q=oujda&appid=${API_KEY}`;
     try {
       const response = await axios.get(url);
       const { lat, lon } = response.data[0];
@@ -92,6 +92,8 @@ export const GetTomorrowHours = createAsyncThunk(
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       const tomorrowDate = tomorrow.toISOString().split("T")[0];
+      console.log(tomorrowDate,"======");
+      
 
       const hourlyForecast = response.data.list
         .filter((entry) => entry.dt_txt.startsWith(tomorrowDate))
@@ -110,13 +112,45 @@ export const GetTomorrowHours = createAsyncThunk(
   }
 );
 
+export const weatherDays = createAsyncThunk(
+  'weather/weatherDays',
+  async ({cityName}, { rejectWithValue }) => {
+    try {
+      const API_KEY = "891386664a64a4ab04e363e0aa0c4b1d";
+      const response = await axios.get(
+        `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&units=metric&appid=${API_KEY}`
+      );
+
+      // Organize forecast data by date
+      const groupedData = response.data.list.reduce((acc, entry) => {
+        const date = entry.dt_txt.split(' ')[0]; // Extract date (YYYY-MM-DD)
+    
+        
+        if (!acc[date]) acc[date] = [];
+        acc[date].push({
+          temperature: Math.round(entry.main.temp),
+          iconWeather: entry.weather[0].icon,
+        });
+
+        
+        return acc;
+      }, {});
+
+      return groupedData;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const weatherApiSlice = createSlice({
   name: "weather",
   initialState: {
     temperature: null,
     geo: null,
-    hoursData: [],
+    hoursData:[],
     tomorrowHoursData: [],
+    forecast: null,
     loading: false,
     error: null,
   },
@@ -170,6 +204,19 @@ const weatherApiSlice = createSlice({
       .addCase(GetTomorrowHours.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+
+      .addCase(weatherDays.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(weatherDays.fulfilled, (state, action) => {
+        state.loading = false;
+        state.forecast = action.payload;
+      })
+      .addCase(weatherDays.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || 'Failed to fetch forecast data.';
       });
   },
 });
